@@ -1,6 +1,6 @@
 import aiohttp
+from pydantic import BaseModel, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import model_validator, BaseModel
 
 __all__ = ["config", "http_request", "WeatherResponseDTM", "JokeDTM"]
 
@@ -14,6 +14,14 @@ class Config(BaseSettings):
     TELEGRAM_API_KEY: str
     CITY_ID: int
     USERS_IDS: str
+    UNITS: str
+    LANGUAGE: str
+    WEB_SERVER_HOST: str
+    WEB_SERVER_PORT: int
+    BASE_WEBHOOK_URL: str
+    WEBHOOK_PATH: str
+    WEBHOOK_SECRET: str
+    CERTIFICATE_PATH: str
 
     @model_validator(mode="after")
     def parse_users_ids(self):

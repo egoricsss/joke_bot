@@ -1,5 +1,6 @@
-from utils import http_request, JokeDTM
 import json
+
+from .utils import JokeDTM, http_request
 
 __all__ = ["get_joke"]
 
