@@ -40,6 +40,8 @@ scheduler = AsyncIOScheduler()
 
 
 async def on_startup(bot: Bot) -> None:
+    scheduler.start()
+    scheduler.add_job(send_weather, "interval", seconds=10)
     scheduler.add_job(send_weather, "cron", hour=8, minute=0)
     scheduler.add_job(send_joke, "cron", hour=8, minute=0)
     scheduler.add_job(send_weather, "cron", hour=12, minute=0)
