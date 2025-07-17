@@ -1,7 +1,7 @@
 from aiogram import Router
+from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
-from aiogram.enums import ParseMode
 
 from utils import get_joke
 

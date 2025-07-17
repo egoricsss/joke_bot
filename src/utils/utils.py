@@ -14,6 +14,7 @@ class Config(BaseSettings):
     TELEGRAM_API_KEY: str
     CITY_ID: int
     USERS_IDS: str
+    ADMIN_ID: int
     UNITS: str
     LANGUAGE: str
     WEB_SERVER_HOST: str
