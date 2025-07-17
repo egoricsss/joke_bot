@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone, timedelta
 import json
 
 from .utils import WeatherResponseDTM, config, http_request
@@ -7,8 +7,8 @@ __all__ = ["get_weather", "format_weather_message"]
 
 
 def format_weather_message(data: WeatherResponseDTM) -> str:
-    sunrise = datetime.fromtimestamp(data.sys.sunrise).strftime("%H:%M")
-    sunset = datetime.fromtimestamp(data.sys.sunset).strftime("%H:%M")
+    sunrise = datetime.fromtimestamp(data.sys.sunrise, tz=timezone(timedelta(hours=3))).strftime("%H:%M")
+    sunset = datetime.fromtimestamp(data.sys.sunset, tz=timezone(timedelta(hours=3))).strftime("%H:%M")
 
     weather_icon = {
         "Clear": "☀️",
