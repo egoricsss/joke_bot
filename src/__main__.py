@@ -4,7 +4,7 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import ErrorEvent
+from aiogram.types import BotCommand, ErrorEvent
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -92,6 +92,12 @@ async def on_startup(bot: Bot) -> None:
 
 
 def main() -> None:
+    bot.set_my_commands(
+        [
+            {"command": "get_weather", "description": "Узнать погоду сейчас"},
+            {"command": "get_joke", "description": "Запросить анекдот"}
+        ]
+    )
     dp.include_routers(joke_router, weather_router, llm_router)
     dp.message.middleware(AllowedOnlyMiddleware())
     dp.startup.register(on_startup)
