@@ -21,7 +21,6 @@ class Config(BaseSettings):
     BASE_WEBHOOK_URL: str
     WEBHOOK_PATH: str
     WEBHOOK_SECRET: str
-    CERTIFICATE_PATH: str
 
     @model_validator(mode="after")
     def parse_users_ids(self):

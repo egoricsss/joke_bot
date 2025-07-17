@@ -18,8 +18,7 @@ sys.path.insert(1, os.path.join(sys.path[0], ".."))
 async def on_startup(bot: Bot) -> None:
     await bot.set_webhook(
         url=f"{config.BASE_WEBHOOK_URL}{config.WEBHOOK_PATH}",
-        secret_token=config.WEBHOOK_SECRET,
-        certificate=FSInputFile(config.CERTIFICATE_PATH),
+        secret_token=config.WEBHOOK_SECRET
     )
 
 
