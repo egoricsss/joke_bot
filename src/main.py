@@ -8,6 +8,7 @@ from aiogram.types import ErrorEvent
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import asyncio
 
 from handlers import joke_router, llm_router, weather_router
 from middleware import AllowedOnlyMiddleware
@@ -91,8 +92,8 @@ async def on_startup(bot: Bot) -> None:
     )
 
 
-def main() -> None:
-    bot.set_my_commands(
+async def main() -> None:
+    await bot.set_my_commands(
         [
             {"command": "get_weather", "description": "Узнать погоду сейчас"},
             {"command": "get_joke", "description": "Запросить анекдот"}
@@ -111,4 +112,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
