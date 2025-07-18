@@ -96,19 +96,41 @@ async def main() -> None:
     await bot.set_my_commands(
         [
             {"command": "get_weather", "description": "Узнать погоду сейчас"},
-            {"command": "get_joke", "description": "Запросить анекдот"}
+            {"command": "get_joke", "description": "Запросить анекдот"},
         ]
     )
+
     dp.include_routers(joke_router, weather_router, llm_router)
     dp.message.middleware(AllowedOnlyMiddleware())
     dp.startup.register(on_startup)
+
+    # Настройка веб-приложения
     app = web.Application()
     webhook_request_handler = SimpleRequestHandler(
         dispatcher=dp, bot=bot, secret_token=config.WEBHOOK_SECRET
     )
     webhook_request_handler.register(app, path=config.WEBHOOK_PATH)
     setup_application(app, dp, bot=bot)
-    web.run_app(app, host=config.WEB_SERVER_HOST, port=config.WEB_SERVER_PORT)
+
+    # Запуск веб-сервера
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, host=config.WEB_SERVER_HOST, port=config.WEB_SERVER_PORT)
+    await site.start()
+
+    print(f"🚀 Бот запущен на http://{config.WEB_SERVER_HOST}:{config.WEB_SERVER_PORT}")
+
+    try:
+        # Удерживаем выполнение, пока не будет остановлено
+        await asyncio.Event().wait()
+    except asyncio.CancelledError:
+        print("🛑 Остановка бота...")
+    finally:
+        # Закрываем ресурсы в любом случае
+        print("🧹 Закрываем ресурсы...")
+        await bot.session.close()  # Закрываем сессию бота
+        await runner.cleanup()  # Очищаем веб-сервер
+        scheduler.shutdown()  # Останавливаем планировщик
 
 
 if __name__ == "__main__":
